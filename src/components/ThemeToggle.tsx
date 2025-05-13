@@ -9,16 +9,16 @@ const ThemeToggle = () => {
 
   return (
     <Button 
-      variant="ghost" 
+      variant="outline" 
       size="icon" 
       onClick={toggleTheme}
       aria-label="Toggle theme"
-      className="rounded-full"
+      className="rounded-full w-9 h-9 border-muted-foreground/20"
     >
-      {theme === "light" ? (
-        <Moon className="h-[1.2rem] w-[1.2rem]" />
+      {theme === "dark" ? (
+        <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
       ) : (
-        <Sun className="h-[1.2rem] w-[1.2rem]" />
+        <Moon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
       )}
     </Button>
   );
