@@ -87,7 +87,7 @@ const Index = () => {
                 strokeWidth="2" 
                 strokeLinecap="round" 
                 strokeLinejoin="round" 
-                className="w-8 h-8 text-dashboard-blue"
+                className="w-8 h-8 text-[hsl(var(--dashboard-blue))]"
               >
                 <path d="M3 3v18h18" />
                 <path d="M18.4 9.4a2.4 2.4 0 1 1 4.8 0 2.4 2.4 0 1 1 -4.8 0" />
@@ -115,7 +115,7 @@ const Index = () => {
             <div className="max-w-4xl mx-auto w-full">
               <div className="text-center mb-8">
                 <h2 className="text-2xl font-bold mb-2">Welcome to AutoDash</h2>
-                <p className="text-gray-600 max-w-xl mx-auto">
+                <p className="text-muted-foreground max-w-xl mx-auto">
                   Upload a CSV file and use natural language to create beautiful data visualizations. 
                   No coding required!
                 </p>
@@ -127,7 +127,7 @@ const Index = () => {
             <>
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-1">
-                  <div className="bg-white p-4 rounded-lg shadow-sm border">
+                  <div className="bg-card p-4 rounded-lg shadow-sm border">
                     <h2 className="text-lg font-medium mb-4">Dataset Info</h2>
                     <div className="text-sm">
                       <p><span className="font-medium">File:</span> {fileName}</p>
@@ -141,7 +141,7 @@ const Index = () => {
                         {dataset.columns.map((column, index) => (
                           <li key={index} className="flex justify-between">
                             <span>{column.name}</span>
-                            <span className="text-gray-500">{column.type}</span>
+                            <span className="text-muted-foreground">{column.type}</span>
                           </li>
                         ))}
                       </ul>
@@ -152,7 +152,7 @@ const Index = () => {
                         <h3 className="text-sm font-medium mb-2">Recent Queries</h3>
                         <ul className="text-sm space-y-2">
                           {queryHistory.map((q, i) => (
-                            <li key={i} className="p-2 bg-gray-50 rounded text-xs">
+                            <li key={i} className="p-2 bg-accent rounded text-xs text-accent-foreground">
                               {q}
                             </li>
                           ))}
@@ -168,7 +168,7 @@ const Index = () => {
                           setChartConfig(null);
                           setQueryHistory([]);
                         }}
-                        className="text-sm text-dashboard-blue hover:underline"
+                        className="text-sm text-[hsl(var(--dashboard-blue))] hover:underline"
                       >
                         Upload a different file
                       </button>

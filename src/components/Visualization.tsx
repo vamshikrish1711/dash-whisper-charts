@@ -6,29 +6,50 @@ import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, ScatterChart, Scatter,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell
 } from 'recharts';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface VisualizationProps {
   chartConfig: ChartConfig;
 }
 
 const Visualization: React.FC<VisualizationProps> = ({ chartConfig }) => {
-  // Colors for charts
-  const colors = [
-    '#3B82F6', // blue
-    '#0EA5E9', // sky
-    '#8B5CF6', // purple
-    '#F97316', // orange
-    '#10B981', // green
-    '#EC4899', // pink
-    '#64748B', // slate
-    '#EF4444', // red
-  ];
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+  
+  // Colors for charts - adjusted for theme
+  const colors = isDark 
+    ? [
+        '#60A5FA', // blue (brighter for dark mode)
+        '#38BDF8', // sky (brighter for dark mode)
+        '#A78BFA', // purple (brighter for dark mode)
+        '#FB923C', // orange (brighter for dark mode)
+        '#34D399', // green (brighter for dark mode)
+        '#F472B6', // pink (brighter for dark mode)
+        '#94A3B8', // slate (brighter for dark mode)
+        '#F87171', // red (brighter for dark mode)
+      ] 
+    : [
+        '#3B82F6', // blue
+        '#0EA5E9', // sky
+        '#8B5CF6', // purple
+        '#F97316', // orange
+        '#10B981', // green
+        '#EC4899', // pink
+        '#64748B', // slate
+        '#EF4444', // red
+      ];
 
-  const pieColors = [
-    '#3B82F6', '#0EA5E9', '#8B5CF6', '#F97316', 
-    '#10B981', '#EC4899', '#64748B', '#EF4444',
-    '#A855F7', '#14B8A6', '#F59E0B', '#6366F1'
-  ];
+  const pieColors = isDark
+    ? [
+        '#60A5FA', '#38BDF8', '#A78BFA', '#FB923C', 
+        '#34D399', '#F472B6', '#94A3B8', '#F87171',
+        '#C4B5FD', '#2DD4BF', '#FBBF24', '#818CF8'
+      ]
+    : [
+        '#3B82F6', '#0EA5E9', '#8B5CF6', '#F97316', 
+        '#10B981', '#EC4899', '#64748B', '#EF4444',
+        '#A855F7', '#14B8A6', '#F59E0B', '#6366F1'
+      ];
 
   const renderChart = () => {
     switch (chartConfig.type) {
@@ -42,10 +63,10 @@ const Visualization: React.FC<VisualizationProps> = ({ chartConfig }) => {
               });
               return dataPoint;
             })}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
+              <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
+              <XAxis dataKey="name" tick={{ fill: isDark ? '#e2e8f0' : '#1e293b' }} />
+              <YAxis tick={{ fill: isDark ? '#e2e8f0' : '#1e293b' }} />
+              <Tooltip contentStyle={{ backgroundColor: isDark ? '#1e293b' : '#ffffff', borderColor: isDark ? '#475569' : '#e2e8f0', color: isDark ? '#e2e8f0' : '#1e293b' }} />
               <Legend />
               {chartConfig.data.datasets.map((dataset: any, index: number) => (
                 <Bar 
@@ -68,10 +89,10 @@ const Visualization: React.FC<VisualizationProps> = ({ chartConfig }) => {
               });
               return dataPoint;
             })}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
+              <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
+              <XAxis dataKey="name" tick={{ fill: isDark ? '#e2e8f0' : '#1e293b' }} />
+              <YAxis tick={{ fill: isDark ? '#e2e8f0' : '#1e293b' }} />
+              <Tooltip contentStyle={{ backgroundColor: isDark ? '#1e293b' : '#ffffff', borderColor: isDark ? '#475569' : '#e2e8f0', color: isDark ? '#e2e8f0' : '#1e293b' }} />
               <Legend />
               {chartConfig.data.datasets.map((dataset: any, index: number) => (
                 <Line
@@ -107,7 +128,7 @@ const Visualization: React.FC<VisualizationProps> = ({ chartConfig }) => {
                   <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
                 ))}
               </Pie>
-              <Tooltip />
+              <Tooltip contentStyle={{ backgroundColor: isDark ? '#1e293b' : '#ffffff', borderColor: isDark ? '#475569' : '#e2e8f0', color: isDark ? '#e2e8f0' : '#1e293b' }} />
               <Legend />
             </PieChart>
           </ResponsiveContainer>
@@ -117,10 +138,10 @@ const Visualization: React.FC<VisualizationProps> = ({ chartConfig }) => {
         return (
           <ResponsiveContainer width="100%" height={400}>
             <ScatterChart>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" dataKey="x" name={chartConfig.xAxis} />
-              <YAxis type="number" dataKey="y" name={chartConfig.yAxis?.[0]} />
-              <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+              <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
+              <XAxis type="number" dataKey="x" name={chartConfig.xAxis} tick={{ fill: isDark ? '#e2e8f0' : '#1e293b' }} />
+              <YAxis type="number" dataKey="y" name={chartConfig.yAxis?.[0]} tick={{ fill: isDark ? '#e2e8f0' : '#1e293b' }} />
+              <Tooltip cursor={{ strokeDasharray: '3 3' }} contentStyle={{ backgroundColor: isDark ? '#1e293b' : '#ffffff', borderColor: isDark ? '#475569' : '#e2e8f0', color: isDark ? '#e2e8f0' : '#1e293b' }} />
               <Legend />
               {chartConfig.data.datasets.map((dataset: any, index: number) => (
                 <Scatter

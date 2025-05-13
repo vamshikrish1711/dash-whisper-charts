@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, KeyboardEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -108,17 +109,17 @@ const QueryInput: React.FC<QueryInputProps> = ({
             placeholder={dataset 
               ? "Ask a question about your data (e.g., 'Show sales by region')" 
               : "Please upload a dataset first"}
-            className="w-full p-3 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-dashboard-blue min-h-[80px]"
+            className="w-full p-3 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[hsl(var(--dashboard-blue))] min-h-[80px] bg-background text-foreground"
             disabled={!dataset || isLoading}
           />
           
           {suggestedQueries.length > 0 && (
-            <div className="absolute z-10 w-full bg-white border rounded-md shadow-lg mt-1">
-              <div className="p-2 text-xs text-gray-500">Suggested queries:</div>
+            <div className="absolute z-10 w-full bg-card border rounded-md shadow-lg mt-1">
+              <div className="p-2 text-xs text-muted-foreground">Suggested queries:</div>
               {suggestedQueries.map((suggestion, index) => (
                 <div
                   key={index}
-                  className="p-2 hover:bg-blue-50 cursor-pointer text-sm"
+                  className="p-2 hover:bg-accent cursor-pointer text-sm"
                   onClick={() => handleSuggestionClick(suggestion)}
                 >
                   {suggestion}
@@ -128,7 +129,7 @@ const QueryInput: React.FC<QueryInputProps> = ({
           )}
           
           <div className="flex justify-between mt-2">
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-muted-foreground">
               {dataset && (
                 <span>Available columns: {dataset.columns.map(c => c.name).join(', ')}</span>
               )}
@@ -136,7 +137,7 @@ const QueryInput: React.FC<QueryInputProps> = ({
             <Button 
               onClick={handleSubmit}
               disabled={!dataset || !query.trim() || isLoading}
-              className="bg-dashboard-blue hover:bg-blue-600"
+              className="bg-[hsl(var(--dashboard-blue))] hover:bg-[hsl(var(--dashboard-blue)_/_0.9)]"
             >
               {isLoading ? 'Processing...' : 'Generate Chart'}
             </Button>
