@@ -4,6 +4,7 @@ import FileUpload from '@/components/FileUpload';
 import DataPreview from '@/components/DataPreview';
 import QueryInput from '@/components/QueryInput';
 import Visualization from '@/components/Visualization';
+import ThemeToggle from '@/components/ThemeToggle';
 import { Dataset, parseCSV } from '@/utils/csvParser';
 import { ChartConfig, processQuery } from '@/utils/queryProcessor';
 import { useToast } from '@/components/ui/use-toast';
@@ -73,8 +74,8 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
+    <div className="min-h-screen bg-background">
+      <header className="bg-card border-b border-border">
         <div className="container mx-auto py-4 px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-2">
@@ -96,11 +97,14 @@ const Index = () => {
               </svg>
               <h1 className="text-xl font-bold">AutoDash</h1>
             </div>
-            {fileName && (
-              <div className="text-sm text-gray-500">
-                Working with: <span className="font-medium">{fileName}</span>
-              </div>
-            )}
+            <div className="flex items-center space-x-2">
+              {fileName && (
+                <div className="text-sm text-muted-foreground mr-4">
+                  Working with: <span className="font-medium">{fileName}</span>
+                </div>
+              )}
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </header>
@@ -191,8 +195,8 @@ const Index = () => {
         </div>
       </main>
       
-      <footer className="mt-12 py-6 border-t">
-        <div className="container mx-auto px-4 text-center text-sm text-gray-500">
+      <footer className="mt-12 py-6 border-t border-border">
+        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
           AutoDash - Natural Language to Dashboard Generator
         </div>
       </footer>
