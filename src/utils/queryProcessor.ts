@@ -143,18 +143,39 @@ const prepareChartData = (
   
   switch (chartType) {
     case 'bar':
-    case 'line':
-      return {
-        labels: xValues,
-        datasets: yColumns.map(col => ({
-          label: col.name,
-          data: col.values,
-        }))
-      };
+    case 'line': {
+      // Aggregate data by x-axis values to avoid duplicates
+      const aggregatedData = new Map<string, { [key: string]: number }>();
+      
+      xValues.forEach((xValue, index) => {
+        const xVal = String(xValue);
+        
+        if (!aggregatedData.has(xVal)) {
+          aggregatedData.set(xVal, {});
+        }
+        
+        const entry = aggregatedData.get(xVal)!;
+        
+        // Sum up values for each y-column
+        yColumns.forEach(yCol => {
+          const yValue = Number(yCol.values[index] || 0);
+          entry[yCol.name] = (entry[yCol.name] || 0) + yValue;
+        });
+      });
+      
+      // Convert aggregated data to chart format
+      const labels = Array.from(aggregatedData.keys());
+      const datasets = yColumns.map(col => ({
+        label: col.name,
+        data: labels.map(label => aggregatedData.get(label)![col.name] || 0)
+      }));
+      
+      return { labels, datasets };
+    }
     
-    case 'pie':
+    case 'pie': {
       // For pie charts, we need to aggregate data if there are duplicates in x-axis
-      const aggregated = new Map<string | number | Date, number>();
+      const aggregated = new Map<string, number>();
       const yColumn = yColumns[0]; // Pie chart works with one y-axis
       
       xValues.forEach((x, index) => {
@@ -169,17 +190,47 @@ const prepareChartData = (
           data: [...aggregated.values()]
         }]
       };
+    }
     
-    case 'scatter':
+    case 'scatter': {
+      // For scatter plots, we need to aggregate points with the same x-value
+      const aggregatedData = new Map<string, { [key: string]: number[] }>();
+      
+      xValues.forEach((xValue, index) => {
+        const xVal = String(xValue);
+        
+        if (!aggregatedData.has(xVal)) {
+          aggregatedData.set(xVal, {});
+        }
+        
+        const entry = aggregatedData.get(xVal)!;
+        
+        // Collect all y-values for each point
+        yColumns.forEach(yCol => {
+          if (!entry[yCol.name]) {
+            entry[yCol.name] = [];
+          }
+          
+          const yValue = Number(yCol.values[index] || 0);
+          entry[yCol.name].push(yValue);
+        });
+      });
+      
+      // Convert to scatter format, using average of y-values for same x
       return {
         datasets: yColumns.map(col => ({
           label: col.name,
-          data: xValues.map((x, i) => ({ 
-            x, 
-            y: col.values[i] 
-          }))
+          data: Array.from(aggregatedData.entries()).map(([x, values]) => {
+            const yValues = values[col.name] || [];
+            const avgY = yValues.length > 0 
+              ? yValues.reduce((sum, val) => sum + val, 0) / yValues.length 
+              : 0;
+            
+            return { x, y: avgY };
+          })
         }))
       };
+    }
     
     default:
       return { labels: xValues, datasets: [] };
