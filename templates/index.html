@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoDash - Natural Language to Charts</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Add Chart.js library for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AutoDash</h1>
+            <p>Ask questions about your data using natural language</p>
+            <div class="theme-toggle">
+                <button id="themeToggle">
+                    <span class="light-icon">☀️</span>
+                    <span class="dark-icon">🌙</span>
+                </button>
+            </div>
+        </header>
+
+        <main>
+            <div class="file-upload-section">
+                <div class="drop-zone" id="dropZone">
+                    <div class="upload-content">
+                        <div class="upload-icon">
+                            <svg viewBox="0 0 24 24" width="48" height="48">
+                                <path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            </svg>
+                        </div>
+                        <div class="upload-text">
+                            <p>Drag and drop your CSV file here, or click to browse</p>
+                            <button id="selectFileBtn">Select File</button>
+                            <input type="file" id="fileInput" accept=".csv" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sample-data">
+                    <p>Sample datasets:</p>
+                    <button id="salesDataBtn" class="sample-btn">Sales Data</button>
+                    <button id="analyticsDataBtn" class="sample-btn">Analytics Data</button>
+                </div>
+            </div>
+
+            <div class="data-preview-section" style="display: none;">
+                <h2>Data Preview</h2>
+                <div class="data-info">
+                    <span id="rowCount">0</span> rows, <span id="columnCount">0</span> columns
+                </div>
+                <div class="table-wrapper">
+                    <table id="dataPreview">
+                        <thead>
+                            <tr id="headerRow"></tr>
+                        </thead>
+                        <tbody id="dataRows"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="query-section" style="display: none;">
+                <div class="query-input-wrapper">
+                    <textarea id="queryInput" placeholder="Ask a question about your data (e.g., 'Show sales by region')"></textarea>
+                    <div class="column-info">
+                        Available columns: <span id="availableColumns"></span>
+                    </div>
+                    <button id="submitQueryBtn" disabled>Generate Chart</button>
+                </div>
+                
+                <div id="suggestedQueries" class="suggested-queries" style="display: none;">
+                    <div class="suggestion-header">Suggested queries:</div>
+                    <div id="suggestions"></div>
+                </div>
+            </div>
+
+            <div class="charts-section" style="display: none;">
+                <div class="chart-container">
+                    <div class="chart-title" id="chartTitle"></div>
+                    <canvas id="chartCanvas"></canvas>
+                </div>
+            </div>
+        </main>
+
+        <div class="toast" id="toast">
+            <div class="toast-content">
+                <div class="toast-title" id="toastTitle"></div>
+                <div class="toast-message" id="toastMessage"></div>
+            </div>
+            <button class="toast-close" id="toastClose">×</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
